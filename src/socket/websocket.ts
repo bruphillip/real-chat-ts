@@ -12,6 +12,7 @@ export class WebSocket {
 
   connection() {
     this.ws.on('connection', (ws, req) => {
+      console.log(req.headers['public-key-pins']);
       ws.on('message', async (message: string) => {
         const msgs = await Messages.find();
         console.log(msgs);

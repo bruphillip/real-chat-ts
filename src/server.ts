@@ -2,9 +2,11 @@ require('dotenv').config();
 import express from 'express';
 import { Server } from 'http';
 import Database from './connection';
+import cors from 'cors';
 
 import routes from './routes';
 import { WebSocket } from './socket/websocket';
+import { Socket } from './socket/socket';
 
 class App {
   public App: express.Application;
@@ -14,10 +16,11 @@ class App {
     this.App = express();
     this.server = new Server(this.App);
     this.App.use(express.json());
-    this.database();
+    // this.database();
     this.applicationPort();
-    this.routes();
+    // this.routes();
     this.connectionWebSocket();
+    this.unlockCors();
   }
 
   private applicationPort(): void {
@@ -34,7 +37,11 @@ class App {
   }
 
   connectionWebSocket() {
-    new WebSocket(this.server);
+    new Socket(this.server);
+  }
+
+  unlockCors() {
+    this.App.use(cors({ origin: '*' }));
   }
 }
 
