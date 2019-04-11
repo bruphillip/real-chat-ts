@@ -8,6 +8,9 @@ import routes from './routes';
 import { WebSocket } from './socket/websocket';
 import { Socket } from './socket/socket';
 
+import routes from './routes';
+import { WebSocket } from './socket/websocket';
+
 class App {
   public App: express.Application;
   public server: Server;
