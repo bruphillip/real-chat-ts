@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
+    <script>
+      var socket;
+
+      function connectar() {
+        socket = io.connect('http://localhost:3000', {
+          query: 'userId=' + $('#userId').val()
+        });
+        socket.on('messages', function(data) {
+          $('#messages').append(
+            '<li> From: ' + data.from + ': ' + data.message + '</li>'
+          );
+        });
+
+        socket.on('self', function(data) {
+          $('#messages').append(
+            '<li> To: ' + data.from + ': ' + data.message + '</li>'
+          );
+        });
+      }
+
+      function enviar() {
+        socket.emit('send', {
+          data: $('#msg').val(),
+          to: $('#guessId').val(),
+          from: $('#userId').val()
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <label for="userId">Username:</label>
+      <input type="text" name="userId" id="userId" />
+
+      <label for="guess">Convidado:</label>
+      <input type="text" name="guess" id="guessId" />
+
+      <button id="connectar" onclick="connectar()">Connectar</button>
+
+      <textarea name="" id="msg" cols="30" rows="10"></textarea>
+      <button onclick="enviar()">Enviar!</button>
+    </div>
+
+    <ul id="messages"></ul>
+  </body>
+</html>
